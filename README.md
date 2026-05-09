@@ -1,4 +1,5 @@
 # ESP32-S3 Walkman Player — Build & Architecture Guide
+![Vibe Coded](https://img.shields.io/badge/vibe-coded-blueviolet?style=for-the-badge)
 
 ## File Structure
 ```
