@@ -66,6 +66,11 @@ CPU: **240 MHz** (mandatory for real-time audio decode)
 | VCC  | 3.3 V   |
 | GND  | GND     |
 
+### Tactile push button (back button)
+| back Pin | ESP32-S3 |
+|--------|---------|
+|        | GPIO 7  |
+
 ---
 
 ## SD Card Folder Structure
@@ -147,7 +152,7 @@ Button press timing state machine:
     1 click  → CLICK_1 (Enter / Play-Pause)
     2 clicks → CLICK_2 (Next track)
     3 clicks → CLICK_3 (Previous track)
-    hold     → LONG_PRESS (Back / EQ menu)
+    hold     → LONG_PRESS (EQ menu)
 
   Rotation:
     CLK falling edge sampled with DT HIGH → CW  (scroll down / volume up)
@@ -161,12 +166,12 @@ Button press timing state machine:
 ```
 ARTISTS ──(click)──► ALBUMS ──(click)──► SONGS ──(click)──► PLAYER
    ↑                    │                   │                   │
-   └──(long press)──────┘ (long=back)       └──(long=back)──►ALBUMS
-                                                               │
-                                    PLAYER ──(long press)──► EQ MENU
-                                      │                        │
-                                  (dbl=next)              (click=done)
-                                  (tri=prev)
+   └─(BACK BUTTON)◄─────┴─(BACK BUTTON)◄────┴─(BACK BUTTON)◄────┘
+                                                                │
+                                     PLAYER ──(long press)──► EQ MENU
+                                       │                        │
+                                   (dbl=next)              (click=done)
+                                   (tri=prev)
                                   (rot=volume)
 ```
 
@@ -201,6 +206,13 @@ Adding a preset: add a new `EQPreset` entry to `PRESETS[]` in `equalizer.cpp`. N
 | SD read (buffered) | Burst, ~5% Core 0 |
 
 Headroom is generous. PSRAM (8 MB) is available for deeper buffering if needed.
+
+## Music Library Management (PSRAM)
+
+- Vector Pointers: artist and album nodes are stored as pointers within std::vector containers allocated in the external PSRAM
+- Capacity: this allows for more than 10,000 files without impacting the heap used by the audio decoder.
+- Initialization: The SD card is recursively scanned at boot; pointers are instantiated into PSRAM to ensure rapid UI scrolling. 
+
 
 ---
 
