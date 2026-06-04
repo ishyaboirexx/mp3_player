@@ -1,8 +1,6 @@
 # ESP32-S3 Walkman Player — Build & Architecture Guide
 ![Vibe Coded](https://img.shields.io/badge/vibe-coded-blueviolet?style=for-the-badge)
 
-<img width="960" height="1280" alt="WhatsApp Image 2026-06-05 at 12 29 25 AM" src="https://github.com/user-attachments/assets/8459ad49-5a31-4fef-939d-4b8d39ccd379" />
-(I have yet to design and make the outer body. The photo above shows the functional prototype with exposed modules)
 
 
 ## File Structure
