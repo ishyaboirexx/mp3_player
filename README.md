@@ -1,7 +1,17 @@
 # ESP32-S3 Walkman Player — Build & Architecture Guide
 ![Vibe Coded](https://img.shields.io/badge/vibe-coded-blueviolet?style=for-the-badge)
 
+## Component List
 
+| Component | Description |
+|-----------|-------------|
+| **ESP32-S3 (N16R8)** | Main MCU — dual-core 240 MHz, 16 MB octal flash, 8 MB OPI PSRAM |
+| **KY-040 rotary encoder** | All user input — scroll, select, volume, back |
+| **0.96" SSD1306 OLED** | 128×64 I2C display — menu and now-playing UI |
+| **UDA1334A DAC** | I2S audio output — feeds amplifier or headphones |
+| **TPS631000 Buck-boost converter** | Stable 3.3V rails from variable Li-Po voltage |
+| **TP4056 with protection** | Li-Po charging and over-discharge protection |
+| **Micro SD card reader** | Holds the music library (FAT32, tested up to 64 GB) |
 
 ## File Structure
 ```
@@ -59,6 +69,8 @@ CPU: **240 MHz** (mandatory for real-time audio decode)
 | MOSI   | GPIO 11 |
 | VCC    | 3.3 V   |
 | GND    | GND     |
+
+>The SD card module had to be modified to bypass its onboard 5V-to-3.3V low-dropout (LDO) linear regulator because the entire system operates natively on a 3.3V rail, the regulator was bypassed to prevent voltage drop and ensure stable SPI communication directly at 3.3V.
 
 ### SSD1306 OLED (I2C)
 | OLED | ESP32-S3 |
