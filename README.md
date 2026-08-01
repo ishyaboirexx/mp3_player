@@ -40,6 +40,35 @@ CPU: **240 MHz** (mandatory for real-time audio decode)
 
 ---
 
+## Arduino IDE Board Settings
+
+Select **ESP32S3 Dev Module** as the board, then configure the Tools menu as follows before uploading:
+
+| Setting | Value |
+|---------|-------|
+| USB CDC On Boot | Disabled |
+| CPU Frequency | 240MHz (WiFi) |
+| Core Debug Level | None |
+| USB DFU On Boot | Disabled |
+| Erase All Flash Before Sketch Upload | Disabled |
+| Events Run On | Core 1 |
+| Flash Mode | DIO 80MHz |
+| Flash Size | 16MB (128Mb) |
+| JTAG Adapter | Disabled |
+| Arduino Runs On | Core 1 |
+| USB Firmware MSC On Boot | Disabled |
+| Partition Scheme | 16M Flash (3MB APP/9.9MB FATFS) |
+| PSRAM | **OPI PSRAM** ← critical, do not skip |
+| Upload Mode | UART0 / Hardware CDC |
+| Upload Speed | 921600 |
+| USB Mode | Hardware CDC and JTAG |
+
+> **PSRAM is the most important setting.** Without it the board runs on ~260 KB of internal SRAM only. The music library scanner will crash mid-scan or produce a different artist count on every boot. With OPI PSRAM enabled, free heap at boot is ~8.3 MB and the player is stable with libraries of 18 GB+.
+
+> **Partition scheme** — `3MB APP / 9.9MB FATFS` gives the sketch enough room and reserves FATFS space. Do not use the default partition scheme or the firmware may not fit.
+
+---
+
 ## Wiring Guide
 
 ### Rotary Encoder KY-040
